@@ -24,6 +24,9 @@ class Maillon{
         return this.val;
     }
 
+    setValeur(val){
+        this.val = val;
+    }
 
 
 }

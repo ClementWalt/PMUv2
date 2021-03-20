@@ -1,10 +1,5 @@
 var listeCarte=[2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36,37,38,39,41,42,43,44,45,46,47,48,49,50,51,52];
 var listeMalus=[].concat(listeCarte);
-var nbplayers;
-var liste_joueur = [];
-var liste_gorge_joueur = [];
-var liste_pari_joueur = [];
-
 var Joueurs = new Liste;
 
 function setup() {
@@ -49,18 +44,42 @@ function saisieJoueurPari(){
 
 }
 
+function changementPari(){
+
+  var Joueur = Joueurs.getPremier();
+
+  for(let i = 0; i < Joueurs.getLongueur(); i++){
+    $('#coulJoueur').remove();
+    NomJoueur = Joueur.getValeur()[0];
+
+    var Pari = window.prompt(NomJoueur + " Quelle couleurs choissiez-vous ? (Coeur,Trèfle,Pique,Carreau)");
+
+    Joueur.setValeur([NomJoueur,Pari]);
+
+    Joueur = Joueur.getSuivant();
+
+
+  }
+
+  AffichagePari();
+}
+
 function AffichagePari(){
+  
+
   var i = 1;
   var Joueur = Joueurs.getPremier();
 
   while(i < Joueurs.getLongueur()+1){
-
-    $("#joueur"+i).prepend($("<span>",{"style":"float:right;", "id":"coulJoueur"}).text(" "+"pari sur le "+Joueur.getValeur()[1]));
+    
+    $("#joueur"+i).prepend($("<span>",{"style":"float:right;", "id":"coulJoueur"}).text("pari sur le "+Joueur.getValeur()[1]));
 
     Joueur = Joueur.getSuivant();
     i++;
   
   }
+
+  
 
   document.querySelector("#lancer").style.display = "None";
   document.querySelector("#jeu").style.visibility = "visible";
@@ -79,6 +98,18 @@ var cartemalus4=false;
 var cartemalus5=false;
 var cartemalus6=false;
 
+function reRemplirePioche(){
+
+  for(let i = 0; i < listeCarte.length; i++){
+
+    pioche.Empiler(listeCarte[getRandomInt(listeCarte.length)]);
+
+
+  } 
+
+
+}
+
 function Tour(){
   h = h+1;
 
@@ -86,7 +117,8 @@ function Tour(){
 
   if(h==listeCarte.length-1){
     h=1;
-    console.log("oui");
+    reRemplirePioche();
+
   }
   $("#melange").attr("src", "image/carte/"+cartepioche+".png");
 
@@ -301,18 +333,18 @@ function Tour(){
   }
 
 
-  console.log(pique);
+
   if(pique == 8) {
-    finish();
+    finish("pique");
   }
   if(trefle == 8) {
-    finish();
+    finish("trèfle");
   }
   if(carreau == 8) {
-    finish();
+    finish("carreau");
   }
   if(coeur == 8) {
-    finish();
+    finish("coeur");
   }
 }
 
@@ -348,37 +380,30 @@ function reinit(){
 
 function boucle(){
   document.querySelector("#tirage2").style.visibility = "hidden";
-  console.log(pique);
-  intervalid = setInterval(Tour,1000);
+  intervalid = setInterval(Tour,100);
 }
 
-  function finish() {
-    clearInterval(intervalid);
-    document.querySelector("#nouvelle").style.visibility = "visible";
-    document.querySelector("#recommencer").style.visibility = "visible";
+function finish(value) {
+
+  
+
+
+  clearInterval(intervalid);
+  document.querySelector("#nouvelle").style.visibility = "visible";
+  document.querySelector("#recommencer").style.visibility = "visible";
 
 }
 
 function Recommencer(){
   document.querySelector("#nouvelle").style.visibility = "hidden";
   document.querySelector("#recommencer").style.visibility = "hidden";
-  liste_gorge_joueur = [];
-  liste_pari_joueur = [];
-  
-  for(var i=0;i<liste_joueur.length;i++){
-
-    $("#nbJoueur").remove();
-    $("#coulJoueur").remove();
-
-  }
-
-  CouleurPari();
-
-  pique = 0;
-  trefle = 0;
-  coeur=0;
-  carreau=0;
+  changementPari();
+  pique = 1;
+  trefle = 1;
+  coeur=1;
+  carreau=1;
   reinit();
+
 
   document.querySelector("#tirage2").style.visibility = "visible";
 
