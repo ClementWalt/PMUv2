@@ -41,4 +41,19 @@ class Liste{
 
     }
 
+    ajouterFin(nvMaillon){
+
+        var m = this.premier;
+
+        while(m.getSuivant() != null){
+
+            m = m.getSuivant();
+
+        }
+
+        m.setSuivant(nvMaillon);
+
+
+    }
+
 }

@@ -20,3 +20,6 @@ for(let i =0 ; i < Joueurs.getLongueur();i++){
 
 
 }
+
+var chute = window.prompt("couille");
+console.log(chute);
