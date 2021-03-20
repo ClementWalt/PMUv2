@@ -5,6 +5,8 @@ var liste_joueur = [];
 var liste_gorge_joueur = [];
 var liste_pari_joueur = [];
 
+var Joueurs = new Liste;
+
 function setup() {
   pioche = new Pile;
 
@@ -22,36 +24,47 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-function saisie(){
-    var nbplayers = window.prompt("Nombre de Joueur :", "2");
-    NbJoueur(nbplayers);
+function saisieJoueurPari(){
+  var i=1;
+  var NomJoueur= window.prompt("Nom du Joueur "+ i +" : ");
+  var Pari = window.prompt(NomJoueur + " Quelle couleurs choissiez-vous ? (Coeur,Trèfle,Pique,Carreau)");
+
+  Joueurs.setPremier(new Maillon([NomJoueur,Pari]));
+
+  $("#joueur").append($("<h4>",{"id":"joueur"+i}).text(Joueurs.getPremier().getValeur()[0]));
+  i++;
+  while(NomJoueur != ""){
+    
+    NomJoueur= window.prompt("Nom du Joueur "+ i +" : (Si plus de joueur appuyer sur entrée avec le champs vide)");
+    if(NomJoueur != ""){
+      Pari = window.prompt(NomJoueur + " Quelle couleurs choissiez-vous ? (Coeur,Trèfle,Pique,Carreau)");
+
+      Joueurs.ajouterFin(new Maillon([NomJoueur,Pari]));
+      $("#joueur").append($("<h4>",{"id":"joueur"+i}).text(NomJoueur));
+      i++;
+    }
+  }
+
+  AffichagePari();
+
 }
 
-function NbJoueur(nb){
-    for (var i = 0; i < nb ; i++) {
-      var nom = window.prompt("Nom du Joueur n°"+(i+1)+":", "Robert");
-      liste_joueur[i]=nom;
-    }
+function AffichagePari(){
+  var i = 1;
+  var Joueur = Joueurs.getPremier();
 
-    for (var j = 0; j < liste_joueur.length; j++) {
-     $("#joueur").append($("<h4>",{"id":"joueur"+j}).text(liste_joueur[j]));
-    }
-    CouleurPari();
+  while(i < Joueurs.getLongueur()+1){
+
+    $("#joueur"+i).prepend($("<span>",{"style":"float:right;", "id":"coulJoueur"}).text(" "+"pari sur le "+Joueur.getValeur()[1]));
+
+    Joueur = Joueur.getSuivant();
+    i++;
+  
   }
 
-function CouleurPari(){
+  document.querySelector("#lancer").style.display = "None";
+  document.querySelector("#jeu").style.visibility = "visible";
 
-  for (var r = 0; r < liste_joueur.length; r++) {
-    var pari = window.prompt(liste_joueur[r]+" Choissisez votre paris entre carreau,coeur,trèfle ou pique", "coeur");
-    liste_pari_joueur[r]=pari;
-  }
-
-  for (var y = 0; y < liste_joueur.length; y++) {
-    $("#joueur"+y).prepend($("<span>",{"style":"float:right;", "id":"coulJoueur"}).text(" "+"pari sur "+liste_pari_joueur[y]));
-    document.querySelector("#lancer").style.display = "None";
-    document.querySelector("#jeu").style.visibility = "visible";
-
-  }
 }
 
 var h = 1;
