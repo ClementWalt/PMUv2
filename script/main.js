@@ -324,7 +324,7 @@ function reinit(){
 function boucle(){
   document.querySelector("#tirage2").style.visibility = "hidden";
   console.log(pique);
-  intervalid = setInterval(Tour,2000);
+  intervalid = setInterval(Tour,1000);
 }
 
   function finish() {
@@ -347,9 +347,7 @@ function Recommencer(){
 
   }
 
-  
-
-  NbGorge();
+  CouleurPari();
 
   pique = 0;
   trefle = 0;
