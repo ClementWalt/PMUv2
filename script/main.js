@@ -24,7 +24,7 @@ function saisieJoueurPari(){
   var NomJoueur= window.prompt("Nom du Joueur "+ i +" : ");
   var Pari = window.prompt(NomJoueur + " Quelle couleurs choissiez-vous ? (Coeur,Trèfle,Pique,Carreau)");
 
-  Joueurs.setPremier(new Maillon([NomJoueur,Pari]));
+  Joueurs.setPremier(new Maillon([NomJoueur,Pari,new Arbre()]));
 
   $("#joueur").append($("<h4>",{"id":"joueur"+i}).text(Joueurs.getPremier().getValeur()[0]));
   i++;
@@ -34,7 +34,7 @@ function saisieJoueurPari(){
     if(NomJoueur != ""){
       Pari = window.prompt(NomJoueur + " Quelle couleurs choissiez-vous ? (Coeur,Trèfle,Pique,Carreau)");
 
-      Joueurs.ajouterFin(new Maillon([NomJoueur,Pari]));
+      Joueurs.ajouterFin(new Maillon([NomJoueur,Pari,new Arbre()]));
       $("#joueur").append($("<h4>",{"id":"joueur"+i}).text(NomJoueur));
       i++;
     }
@@ -47,18 +47,23 @@ function saisieJoueurPari(){
 function changementPari(){
 
   var Joueur = Joueurs.getPremier();
+  var i =0;
 
-  for(let i = 0; i < Joueurs.getLongueur(); i++){
+  
+
+  while( i < Joueurs.getLongueur()){
+
     $('#coulJoueur').remove();
+
     NomJoueur = Joueur.getValeur()[0];
 
     var Pari = window.prompt(NomJoueur + " Quelle couleurs choissiez-vous ? (Coeur,Trèfle,Pique,Carreau)");
 
-    Joueur.setValeur([NomJoueur,Pari]);
+    Joueur.setValeur([NomJoueur,Pari,Joueur.getValeur()[2]]);
 
     Joueur = Joueur.getSuivant();
 
-
+    i++
   }
 
   AffichagePari();
@@ -70,14 +75,18 @@ function AffichagePari(){
   var i = 1;
   var Joueur = Joueurs.getPremier();
 
+  $("#nbPartie").text("Nombre de Partie : "+ Joueur.getValeur()[2].getLongueurArbre());
+
   while(i < Joueurs.getLongueur()+1){
     
-    $("#joueur"+i).prepend($("<span>",{"style":"float:right;", "id":"coulJoueur"}).text("pari sur le "+Joueur.getValeur()[1]));
+    $("#joueur"+i).prepend($("<span>",{"style":"float:right;", "id":"coulJoueur"}).text("pari sur le "+Joueur.getValeur()[1]+ " | ratio : "+Joueur.getValeur()[2].calculRatio()));
 
     Joueur = Joueur.getSuivant();
     i++;
   
   }
+
+  
 
   
 
@@ -335,16 +344,16 @@ function Tour(){
 
 
   if(pique == 8) {
-    finish("pique");
+    finish("Pique");
   }
   if(trefle == 8) {
-    finish("trèfle");
+    finish("Trèfle");
   }
   if(carreau == 8) {
-    finish("carreau");
+    finish("Carreau");
   }
   if(coeur == 8) {
-    finish("coeur");
+    finish("Coeur");
   }
 }
 
@@ -385,7 +394,28 @@ function boucle(){
 
 function finish(value) {
 
-  
+  var testResultJoueur = Joueurs.getPremier();
+
+  var i = 0;
+
+  while( i < Joueurs.getLongueur()){
+
+    if(testResultJoueur.getValeur()[1] == value){
+
+      testResultJoueur.getValeur()[2].AjouterResultat(true,value);
+
+    }
+    else{
+
+      testResultJoueur.getValeur()[2].AjouterResultat(false,value);
+
+    }
+
+    testResultJoueur = testResultJoueur.getSuivant();
+
+    i++;
+
+  }
 
 
   clearInterval(intervalid);
