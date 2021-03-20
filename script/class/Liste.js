@@ -1,48 +1,44 @@
-class ListeChaine{
+class Liste{
 
-    premier;
+    constructor(){
 
-    getPremier(){
-        return this.premier;
+        this.premier = null;
+
+
     }
 
     estVide(){
-        var res = false;
-        if(premier == null){
-            res = true;
-        }
 
-        return res;
+        return this.premier == null;
 
     }
 
-    AjouterDébut(valeur){
+    setPremier(premier){
 
-        ancienPremier = this.premier;
+        this.premier = premier;
 
-        premier = new ElementListe(valeur, ancienPremier);
+    }
+
+    getPremier(){
+
+        return this.premier;
 
     }
 
     getLongueur(){
 
-        var longueur=0
+        var m = this.premier;
+        var longueur = 0;
 
-        ref = this.getPremier()
-
-        while(ref != null){
+        while(m!=null){
 
             longueur++;
-            ref= ref.getSuivant();
+            m = m.suivant;
 
         }
 
         return longueur;
 
     }
-
-
-
-
 
 }
