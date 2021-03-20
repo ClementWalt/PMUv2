@@ -85,13 +85,3 @@ class Pile{
 
 
 }
-
-pile = new Pile;
-
-pile.Alea();
-
-pile.Afficher();
-
-console.log("\n"+"\n"+pile.Depiler()+"\n"+"\n");
-
-pile.Afficher();
